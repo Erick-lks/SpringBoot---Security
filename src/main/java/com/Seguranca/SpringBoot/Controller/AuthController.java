@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.Seguranca.SpringBoot.Config.TokenConfig;
 import com.Seguranca.SpringBoot.Dto.Request.LoginRequestUser;
 import com.Seguranca.SpringBoot.Dto.Request.RegisterRequestUser;
 import com.Seguranca.SpringBoot.Dto.Response.LoginResponseUser;
@@ -28,11 +29,14 @@ public class AuthController {
     private final UserRepository userRepository;
    private final PasswordEncoder passwordEncoder;
    private final AuthenticationManager authenticationManager;
+   private final TokenConfig tokenConfig;
 
-      public AuthController (UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager){
+      public AuthController (UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, TokenConfig tokenConfig){
+        
         this.userRepository = userRepository;
         this.passwordEncoder= passwordEncoder;
         this.authenticationManager=authenticationManager;
+        this.tokenConfig=tokenConfig;
       }
     
   
@@ -41,8 +45,12 @@ public class AuthController {
 
       UsernamePasswordAuthenticationToken userandPass = new UsernamePasswordAuthenticationToken(request.email(),request.password());
       Authentication authentication = authenticationManager.authenticate(userandPass);
+
+      User user = (User) authentication.getPrincipal();
+      String token = tokenConfig.generatedToken(user);
+
       
-        return null;
+        return ResponseEntity.ok(new LoginResponseUser(token));
     }
     
 

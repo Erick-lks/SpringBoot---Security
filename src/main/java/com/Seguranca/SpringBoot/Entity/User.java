@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,6 +29,8 @@ public class User implements UserDetails {
 
 
     private String name;
+    
+@Column(unique = true)
     private String email;
     private String password;
     @Override
@@ -58,7 +61,6 @@ public class User implements UserDetails {
     }
 
 
-    // Getter e Setter para ID
     public Long getId() {
         return id;
     }
@@ -67,7 +69,6 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    // Getter e Setter para Name
     public String getName() {
         return name;
     }
@@ -76,7 +77,6 @@ public class User implements UserDetails {
         this.name = name;
     }
 
-    // Getter e Setter para Email
     public String getEmail() {
         return email;
     }
@@ -85,7 +85,8 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    // Getter e Setter para Password
+  
+    @Override
     public String getPassword() {
         return password;
     }
